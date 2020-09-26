@@ -1,9 +1,7 @@
 # pi_lightsensor_webthing
 A web connected digital light sensor measuring the intensity of ambient light on Raspberry Pi
 
-This project provides a [webthing API](https://iot.mozilla.org/wot/) to a digital light sensor such as mentioned in [Photo-resistor light sensor on Raspberry Pi](https://www.freva.com/2019/06/12/light-sensor-on-raspberry-pi/)  
-running on a Raspberry Pi. As a webthing, the light sensor can be discovered and used by 
-*home automation systems* or custom solutions supporting the webthing API.  
+This project provides a [webthing API](https://iot.mozilla.org/wot/) to a digital light sensor such as mentioned in [Photo-resistor light sensor on Raspberry Pi](https://www.freva.com/2019/06/12/light-sensor-on-raspberry-pi/).  
 
 The pi_lightsensor_webthing package exposes an http webthing endpoint which supports measuring the intensity of ambient light via http. E.g. 
 ```
