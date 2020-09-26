@@ -23,12 +23,12 @@ sudo pip install pi_lightsensor_webthing
 
 After this installation you may start the webthing http endpoint inside your python code or via command line using
 ```
-sudo lightsensor --command listen --port 9122 --gpio 131
+sudo lightsensor --command listen --port 9122 --gpio 13
 ```
 Here, the webthing API will be bind to the local port 9122 and be connected to the light sensor digital pin using gpio 13
 
 Alternatively to the *listen* command, you can use the *register* command to register and start the webthing service as systemd unit. 
 By doing this the webthing service will be started automatically on boot. Starting the server manually using the *listen* command is no longer necessary. 
 ```
-sudo lightsensor --command register --port 9122 --gpio 33
+sudo lightsensor --command register --port 9122 --gpio 13
 ```  
