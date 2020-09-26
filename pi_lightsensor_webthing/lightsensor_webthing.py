@@ -14,7 +14,7 @@ class LightSensor(Thing):
             self,
             'urn:dev:ops:illuminanceSensor-1',
             'IlluminanceSensor',
-            [''],
+            ['OnOffSwitch'],
             description
         )
 
@@ -31,7 +31,7 @@ class LightSensor(Thing):
                          '@type': 'OnOffProperty',
                          'title': 'bright',
                          "type": "boolean",
-                         'description': 'Is bright',
+                         'description': 'Whether the lamp is bright',
                          'readOnly': True,
                      }))
 
