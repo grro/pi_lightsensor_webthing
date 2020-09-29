@@ -22,7 +22,7 @@ class LightSensor(Thing):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
 
-        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 10000)
+        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 30000)
 
         self.bright = Value(False)
         self.add_property(
