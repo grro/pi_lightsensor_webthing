@@ -38,7 +38,7 @@ class LightSensor(Thing):
         self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 30000)
         self.timer.start()
 
-    def __measure(self, channel):
+    def __measure(self):
         if GPIO.input(self.gpio_number):
             self.bright.notify_of_external_update(True)
         else:
