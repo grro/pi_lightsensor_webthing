@@ -22,8 +22,6 @@ class LightSensor(Thing):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
 
-        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 30000)
-
         self.bright = Value(False)
         self.add_property(
             Property(self,
@@ -36,13 +34,15 @@ class LightSensor(Thing):
                          'description': 'Whether the lamp is bright',
                          'readOnly': True,
                      }))
+
+        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 30000)
         self.timer.start()
 
     def __measure(self, channel):
         if GPIO.input(self.gpio_number):
             self.bright.notify_of_external_update(True)
         else:
-            self.bright.notify_of_external_update(True)
+            self.bright.notify_of_external_update(False)
         logging.info("bright=" + str(self.bright.get()))
 
     def cancel_measure_task(self):
