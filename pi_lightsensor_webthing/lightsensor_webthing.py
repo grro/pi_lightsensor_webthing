@@ -1,6 +1,7 @@
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
 import logging
 import RPi.GPIO as GPIO
+import tornado.ioloop
 
 
 class LightSensor(Thing):
@@ -20,7 +21,8 @@ class LightSensor(Thing):
         self.gpio_number = gpio_number
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
-        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.__update, bouncetime=5)
+
+        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 10000)
 
         self.bright = Value(False)
         self.add_property(
@@ -34,14 +36,18 @@ class LightSensor(Thing):
                          'description': 'Whether the lamp is bright',
                          'readOnly': True,
                      }))
-        self.__update()
+        self.timer.start()
 
-    def __update(self, channel):
+    def __measure(self, channel):
         if GPIO.input(self.gpio_number):
             self.bright.notify_of_external_update(True)
         else:
             self.bright.notify_of_external_update(True)
         logging.info("bright=" + str(self.bright.get()))
+
+    def cancel_measure_task(self):
+        self.timer.stop()
+
 
 def run_server(port, gpio_number, description):
     light_sensor = LightSensor(gpio_number, description)
@@ -50,8 +56,8 @@ def run_server(port, gpio_number, description):
         logging.info('starting the server')
         server.start()
     except KeyboardInterrupt:
-        logging.debug('canceling the sensor update looping task')
         logging.info('stopping the server')
+        light_sensor.cancel_measure_task()
         server.stop()
         logging.info('done')
 
