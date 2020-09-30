@@ -35,15 +35,19 @@ class LightSensor(Thing):
                          'readOnly': True,
                      }))
 
-        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, 30000)
+        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, (60 * 1000))  # 1 min
         self.timer.start()
 
     def __measure(self):
-        if GPIO.input(self.gpio_number):
-            self.bright.notify_of_external_update(True)
-        else:
-            self.bright.notify_of_external_update(False)
-        logging.info("bright=" + str(self.bright.get()))
+        try:
+            if GPIO.input(self.gpio_number):
+                self.bright.notify_of_external_update(True)
+                logging.info("bright=True")
+            else:
+                self.bright.notify_of_external_update(False)
+                logging.info("bright=False")
+        except Exception as e:
+            logging.error(e)
 
     def cancel_measure_task(self):
         self.timer.stop()
@@ -57,7 +61,6 @@ def run_server(port, gpio_number, description):
         server.start()
     except KeyboardInterrupt:
         logging.info('stopping the server')
-        light_sensor.cancel_measure_task()
+        light_sensor.timer.stop()
         server.stop()
         logging.info('done')
-
