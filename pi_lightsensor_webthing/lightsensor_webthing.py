@@ -41,11 +41,11 @@ class LightSensor(Thing):
     def __measure(self):
         try:
             if GPIO.input(self.gpio_number):
-                self.bright.notify_of_external_update(True)
-                logging.info("bright=True")
-            else:
                 self.bright.notify_of_external_update(False)
                 logging.info("bright=False")
+            else:
+                self.bright.notify_of_external_update(True)
+                logging.info("bright=True")
         except Exception as e:
             logging.error(e)
 
