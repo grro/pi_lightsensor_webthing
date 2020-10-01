@@ -18,6 +18,7 @@ class LightSensor(Thing):
             description
         )
 
+        logging.info('bind to port ' + str(gpio_number))
         self.gpio_number = gpio_number
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
@@ -35,19 +36,17 @@ class LightSensor(Thing):
                          'readOnly': True,
                      }))
 
-        self.timer = tornado.ioloop.PeriodicCallback(self.__measure, (60 * 1000))  # 1 min
+        self.timer = tornado.ioloop.PeriodicCallback(self.measure, (60 * 1000))  # 1 min
         self.timer.start()
 
-    def __measure(self):
-        try:
-            if GPIO.input(self.gpio_number):
-                self.bright.notify_of_external_update(False)
-                logging.info("bright=False")
-            else:
-                self.bright.notify_of_external_update(True)
-                logging.info("bright=True")
-        except Exception as e:
-            logging.error(e)
+    def measure(self):
+        if GPIO.input(self.gpio_number):
+            self.bright.notify_of_external_update(False)
+            logging.info("bright=False")
+        else:
+            self.bright.notify_of_external_update(True)
+            logging.info("bright=True")
+
 
     def cancel_measure_task(self):
         self.timer.stop()
