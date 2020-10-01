@@ -38,21 +38,14 @@ class LightSensor(Thing):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_number, GPIO.IN)
         self.bright.notify_of_external_update(self.read_gpio())
-        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.update, bouncetime=5)
-
+        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.update, bouncetime=100)
 
     def update(self, channel):
-        if GPIO.input(self.gpio_number):
-            logging.info("motion detected")
-            self.ioloop.add_callback(self.update_bright_prop, True)
-        else:
-            self.ioloop.add_callback(self.update_bright_prop, False)
+        is_bright = self.read_gpio()
+        self.ioloop.add_callback(self.update_bright_prop, is_bright)
 
     def update_bright_prop(self, is_bright):
-        if is_bright:
-            self.bright.notify_of_external_update(True)
-        else:
-            self.bright.notify_of_external_update(False)
+        self.bright.notify_of_external_update(is_bright)
 
     def read_gpio(self):
         if GPIO.input(self.gpio_number):
