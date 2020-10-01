@@ -18,11 +18,6 @@ class LightSensor(Thing):
             description
         )
 
-        logging.info('bind to port ' + str(gpio_number))
-        self.gpio_number = gpio_number
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.gpio_number, GPIO.IN)
-
         self.bright = Value(False)
         self.add_property(
             Property(self,
@@ -36,20 +31,36 @@ class LightSensor(Thing):
                          'readOnly': True,
                      }))
 
-        self.timer = tornado.ioloop.PeriodicCallback(self.measure, (60 * 1000))  # 1 min
-        self.timer.start()
+        self.ioloop = tornado.ioloop.IOLoop.current()
 
-    def measure(self):
+        logging.info('bind to port ' + str(gpio_number))
+        self.gpio_number = gpio_number
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.gpio_number, GPIO.IN)
+        self.bright.notify_of_external_update(self.read_gpio())
+        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.update, bouncetime=5)
+
+
+    def update(self, channel):
         if GPIO.input(self.gpio_number):
-            self.bright.notify_of_external_update(False)
-            logging.info("bright=False")
+            logging.info("motion detected")
+            self.ioloop.add_callback(self.update_bright_prop, True)
         else:
+            self.ioloop.add_callback(self.update_bright_prop, False)
+
+    def update_bright_prop(self, is_bright):
+        if is_bright:
             self.bright.notify_of_external_update(True)
-            logging.info("bright=True")
+        else:
+            self.bright.notify_of_external_update(False)
 
-
-    def cancel_measure_task(self):
-        self.timer.stop()
+    def read_gpio(self):
+        if GPIO.input(self.gpio_number):
+            logging.info("state updated: False")
+            return False
+        else:
+            logging.info("state updated: True")
+            return True
 
 
 def run_server(port, gpio_number, description):
@@ -60,6 +71,5 @@ def run_server(port, gpio_number, description):
         server.start()
     except KeyboardInterrupt:
         logging.info('stopping the server')
-        light_sensor.timer.stop()
         server.stop()
         logging.info('done')
