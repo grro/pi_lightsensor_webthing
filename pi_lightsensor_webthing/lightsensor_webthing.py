@@ -32,28 +32,21 @@ class LightSensor(Thing):
                      }))
 
         self.ioloop = tornado.ioloop.IOLoop.current()
-
-        logging.info('bind to port ' + str(gpio_number))
-        self.gpio_number = gpio_number
+        logging.info('bind to gpio ' + str(gpio_number))
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.gpio_number, GPIO.IN)
-        self.bright.notify_of_external_update(self.read_gpio())
-        GPIO.add_event_detect(self.gpio_number, GPIO.BOTH, callback=self.update, bouncetime=100)
+        GPIO.setup(gpio_number, GPIO.IN)
+        GPIO.add_event_detect(gpio_number, GPIO.BOTH, callback=self.__update, bouncetime=5)
+        self.__update(gpio_number)
 
-    def update(self, channel):
-        is_bright = self.read_gpio()
-        self.ioloop.add_callback(self.update_bright_prop, is_bright)
-
-    def update_bright_prop(self, is_bright):
-        self.bright.notify_of_external_update(is_bright)
-
-    def read_gpio(self):
-        if GPIO.input(self.gpio_number):
-            logging.info("state updated: False")
-            return False
+    def __update(self, gpio_number):
+        if GPIO.input(gpio_number):
+            self.ioloop.add_callback(self.__update_bright_prop, False)
         else:
-            logging.info("state updated: True")
-            return True
+            self.ioloop.add_callback(self.__update_bright_prop, True)
+
+    def __update_bright_prop(self, is_bright):
+        self.bright.notify_of_external_update(is_bright)
+        logging.info("is_bright: " + str(is_bright))
 
 
 def run_server(port, gpio_number, description):
