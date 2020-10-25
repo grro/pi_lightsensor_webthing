@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'listen':
-        print("running " + PACKAGENAME + " on p" + args.hostname + "/" + str(args.port) + " (gpio " + str(args.gpio) + ")")
+        print("running " + PACKAGENAME + " on " + args.hostname + "/" + str(args.port) + " (gpio " + str(args.gpio) + ")")
         run_server(args.hostname, int(args.port), int(args.gpio), args.name, DESCRIPTION)
     elif args.command == 'register':
         print("register " + PACKAGENAME + " on " + args.hostname + "/" + str(args.port) + " (gpio " + str(args.gpio) + ") and starting it")
