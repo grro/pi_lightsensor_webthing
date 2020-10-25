@@ -49,9 +49,9 @@ class LightSensor(Thing):
         logging.info("is_bright: " + str(is_bright))
 
 
-def run_server(port, gpio_number, name, description):
+def run_server(hostname:str, port: int, gpio_number: int, name: str, description: str):
     light_sensor = LightSensor(gpio_number, name, description)
-    server = WebThingServer(SingleThing(light_sensor), port=port)
+    server = WebThingServer(SingleThing(light_sensor), hostname=hostname, port=port)
     try:
         logging.info('starting the server')
         server.start()
