@@ -13,7 +13,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --hostname $hostname --verbose $verbose --port $port --gpio $gpio_number --name $name
+ExecStart=$entrypoint --command listen --hostname $hostname --verbose $verbose --port $port --gpio $gpio --name $name
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
