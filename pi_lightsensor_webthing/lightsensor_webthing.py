@@ -13,7 +13,7 @@ class LightSensor(Thing):
         Thing.__init__(
             self,
             'urn:dev:ops:illuminanceSensor-1',
-            'Illuminance Sensor ' + name,
+            'Illuminance ' + name + ' Sensor',
             ['BinarySensor'],
             description
         )
