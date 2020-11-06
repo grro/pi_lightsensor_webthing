@@ -25,7 +25,7 @@ class LightSensor(Thing):
                      self.bright,
                      metadata={
                          '@type': 'BrightnessProperty',
-                         'title': 'Brightness level from 0-100',
+                         'title': 'Brightness (0-100)',
                          "type": "integer",
                          'minimum': 0,
                          'maximum': 100,
