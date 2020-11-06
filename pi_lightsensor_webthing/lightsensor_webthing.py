@@ -14,7 +14,7 @@ class LightSensor(Thing):
             self,
             'urn:dev:ops:illuminanceSensor-1',
             'Illuminance ' + name + ' Sensor',
-            ['BinarySensor'],
+            ['MultiLevelSensor'],
             description
         )
 
@@ -30,7 +30,7 @@ class LightSensor(Thing):
                          'minimum': 0,
                          'maximum': 100,
                          'unit': 'percent',
-                         'description': 'The level of brightness',
+                         'description': '"The level of light from 0-100',
                          'readOnly': True,
                      }))
 
