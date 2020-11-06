@@ -10,7 +10,7 @@ The pi_lightsensor_webthing package exposes an http webthing endpoint which supp
 curl http://192.168.0.23:9122/properties 
 
 {
-   "bright": true
+   "brightness": 100
 }
 ```
 

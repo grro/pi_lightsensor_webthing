@@ -18,16 +18,19 @@ class LightSensor(Thing):
             description
         )
 
-        self.bright = Value(False)
+        self.bright = Value(0)
         self.add_property(
             Property(self,
-                     'bright',
+                     'brightness',
                      self.bright,
                      metadata={
-                         '@type': 'BooleanProperty',
-                         'title': 'bright',
-                         "type": "boolean",
-                         'description': 'Whether is bright',
+                         '@type': 'BrightnessProperty',
+                         'title': 'Brightness',
+                         "type": "integer",
+                         'minimum': 0,
+                         'maximum': 100,
+                         'unit': 'percent',
+                         'description': 'The level of brightness',
                          'readOnly': True,
                      }))
 
@@ -40,13 +43,13 @@ class LightSensor(Thing):
 
     def __update(self, gpio_number):
         if GPIO.input(gpio_number):
-            self.ioloop.add_callback(self.__update_bright_prop, False)
+            self.ioloop.add_callback(self.__update_bright_prop, 0)
         else:
-            self.ioloop.add_callback(self.__update_bright_prop, True)
+            self.ioloop.add_callback(self.__update_bright_prop, 100)
 
-    def __update_bright_prop(self, is_bright):
-        self.bright.notify_of_external_update(is_bright)
-        logging.info("is_bright: " + str(is_bright))
+    def __update_bright_prop(self, brightness: int):
+        self.bright.notify_of_external_update(brightness)
+        logging.info("brightness: " + str(brightness))
 
 
 def run_server(hostname:str, port: int, gpio_number: int, name: str, description: str):
