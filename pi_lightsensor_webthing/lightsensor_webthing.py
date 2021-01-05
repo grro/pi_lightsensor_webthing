@@ -52,9 +52,9 @@ class LightSensor(Thing):
         logging.info("brightness: " + str(brightness))
 
 
-def run_server(hostname:str, port: int, gpio_number: int, name: str, description: str):
+def run_server(port: int, gpio_number: int, name: str, description: str):
     light_sensor = LightSensor(gpio_number, name, description)
-    server = WebThingServer(SingleThing(light_sensor), hostname=hostname, port=port)
+    server = WebThingServer(SingleThing(light_sensor), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server')
         server.start()

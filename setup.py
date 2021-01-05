@@ -35,7 +35,7 @@ setup(
         'webthings', 'home automation', 'digital', 'light', 'sensor', 'ambient', 'light'
     ],
     install_requires=[
-        'webthing',
+        'webthing==0.15.0',
         'RPi.GPIO'
     ],
     classifiers=[

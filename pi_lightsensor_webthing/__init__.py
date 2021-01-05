@@ -13,7 +13,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --hostname $hostname --verbose $verbose --port $port --gpio $gpio --name $name
+ExecStart=$entrypoint --command listen --verbose $verbose --port $port --gpio $gpio --name $name
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -35,15 +35,15 @@ class LightSensorApp(App):
     def do_additional_listen_example_params(self):
         return "--gpio 14"
 
-    def do_process_command(self, command:str, hostname: str, port: int, verbose: bool, args) -> bool:
+    def do_process_command(self, command:str, port: int, verbose: bool, args) -> bool:
         if command == 'listen' and (args.gpio is not None):
-            print("running " + self.packagename + " on " + hostname + ":" + str(port) + " (gpio " + str(args.gpio) + ")")
-            run_server(hostname, port, int(args.gpio), args.name, self.description)
+            print("running " + self.packagename + " on port " + str(port) + " (gpio " + str(args.gpio) + ")")
+            run_server(port, int(args.gpio), args.name, self.description)
             return True
         elif args.command == 'register' and (args.gpio is not None):
-            print("register " + self.packagename + " on " + hostname + ":" + str(port) + " (gpio " + str(args.gpio) + ") and starting it")
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, hostname=hostname, port=port, verbose=verbose, gpio=args.gpio, name=args.name)
-            self.unit.register(hostname, port, unit)
+            print("register " + self.packagename + " on port " + str(port) + " (gpio " + str(args.gpio) + ") and starting it")
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, verbose=verbose, gpio=args.gpio, name=args.name)
+            self.unit.register(port, unit)
             return True
         else:
             return False
