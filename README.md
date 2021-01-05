@@ -20,10 +20,8 @@ To install this software you may use Docker or [PIP](https://realpython.com/what
 
 **Docker approach**
 ```
-sudo docker run -p 9122:9122 -e gpio=13  grro/pi_lightsensor_webthing:0.1.0
+sudo docker run --privileged -p 9122:9122 -e gpio=13 grro/pi_lightsensor_webthing:0.1.0
 ```
-```
-
 
 **PIP approach**
 ```
