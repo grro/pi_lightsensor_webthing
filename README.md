@@ -16,7 +16,7 @@ curl http://192.168.0.23:9122/properties
 
 Regarding the RaspberryPi/digital light sensor hardware setup and wiring please refer tutorials mentioned above
 
-To install this software you may use Docker or [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
+To install this software you may use [Docker](https://phoenixnap.com/kb/docker-on-raspberry-pi) or [PIP](https://realpython.com/what-is-pip/) package manager such as shown below
 
 **Docker approach**
 ```
