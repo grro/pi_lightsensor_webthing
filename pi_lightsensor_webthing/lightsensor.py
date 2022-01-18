@@ -17,13 +17,3 @@ class LightSensor:
         while True:
             listener(self.sensor.lux)
             sleep(1)
-
-
-
-def listener(brightness: float):
-    print(brightness)
-
-sensor = LightSensor()
-sensor.listen(listener)
-
-sleep(10000)
