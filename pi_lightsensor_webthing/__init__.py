@@ -30,7 +30,7 @@ class LightSensorApp(App):
 
 
     def do_process_command(self, command:str, port: int, verbose: bool, args) -> bool:
-        if command == 'listen' and (args.gpio is not None):
+        if command == 'listen':
             print("running " + self.packagename + " on port " + str(port))
             run_server(port, description=self.description)
             return True
