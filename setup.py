@@ -35,8 +35,7 @@ setup(
         'webthings', 'home automation', 'digital', 'light', 'sensor', 'ambient', 'light', 'BH1750'
     ],
     install_requires=[
-        'webthing==0.15.0',
-        'adafruit-circuitpython-bh1750==1.0.6'
+        'webthing==0.15.0',  'RPi.GPIO',  'adafruit-circuitpython-bh1750==1.0.6'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
