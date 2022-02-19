@@ -17,6 +17,9 @@ class LightSensor:
 
     def __listen(self, listener):
         while True:
-            listener(int(self.sensor.lux))
+            try:
+                listener(int(self.sensor.lux))
+            except Exception as e:
+                print("error occurred", e)
             sleep(1)
 
