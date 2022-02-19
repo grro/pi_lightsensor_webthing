@@ -36,10 +36,11 @@ class LightSensorThing(Thing):
 
         self.ioloop = tornado.ioloop.IOLoop.current()
 
-    def on_measured(self, brightness: float):
+    def on_measured(self, brightness: int):
         self.ioloop.add_callback(self.__update_brightness, brightness)
 
-    def __update_brightness(self, brightness: float):
+    def __update_brightness(self, brightness: int):
+        print("update " + str(brightness))
         self.bright.notify_of_external_update(int(brightness))
 
 

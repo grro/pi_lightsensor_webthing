@@ -17,5 +17,6 @@ class LightSensor:
 
     def __listen(self, listener):
         while True:
-            listener(self.sensor.lux)
+            listener(int(self.sensor.lux))
             sleep(1)
+
