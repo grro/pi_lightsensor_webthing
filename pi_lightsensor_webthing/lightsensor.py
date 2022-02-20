@@ -7,7 +7,8 @@ from time import sleep
 
 class LightSensor:
 
-    def __init__(self):
+    def __init__(self, measure_period: int):
+        self.measure_period = measure_period
         i2c = board.I2C()
         self.sensor = adafruit_bh1750.BH1750(i2c)
         logging.info("light sensor connected")
@@ -21,5 +22,5 @@ class LightSensor:
                 listener(int(self.sensor.lux))
             except Exception as e:
                 print("error occurred", e)
-            sleep(1)
+            sleep(self.measure_period)
 

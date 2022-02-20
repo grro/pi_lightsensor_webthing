@@ -45,8 +45,8 @@ class LightSensorThing(Thing):
         self.bright.notify_of_external_update(brightness)
 
 
-def run_server(port: int, description: str = ""):
-    light_sensor = LightSensorThing(description, LightSensor())
+def run_server(port: int, description: str = "", measure_period: int = 7):
+    light_sensor = LightSensorThing(description, LightSensor(measure_period))
     server = WebThingServer(SingleThing(light_sensor), port=port, disable_host_validation=True)
     try:
         logging.info('starting the server')

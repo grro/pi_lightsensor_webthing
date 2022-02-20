@@ -13,7 +13,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --verbose $verbose --port $port
+ExecStart=$entrypoint --command listen --verbose $verbose --port $port  --measure_period $measure_period
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -31,12 +31,12 @@ class LightSensorApp(App):
 
     def do_process_command(self, command:str, port: int, verbose: bool, args) -> bool:
         if command == 'listen':
-            print("running " + self.packagename + " on port " + str(port))
-            run_server(port, description=self.description)
+            print("running " + self.packagename + " on port " + str(port) + " (measure period " +str(args.measure_period) + " sec)")
+            run_server(port, self.description, args.measure_period)
             return True
         elif args.command == 'register':
             print("register " + self.packagename + " on port " + str(port) + " and starting it")
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, verbose=verbose)
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, verbose=verbose, measure_period=args.measure_period)
             self.unit.register(port, unit)
             return True
         else:
