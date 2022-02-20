@@ -21,7 +21,7 @@ class LightSensor:
         while True:
             try:
                 self.measures.append(self.sensor.lux)
-                while len(self.measures) > 5:
+                while len(self.measures) > 10:
                     self.measures.pop(0)
                 loop +=1
                 if loop > 5:
