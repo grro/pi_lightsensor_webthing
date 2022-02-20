@@ -37,11 +37,9 @@ class LightSensorThing(Thing):
                      }))
 
     def on_measured(self, brightness: int):
-        print("on_measured " + str(brightness))
         self.ioloop.add_callback(self.__update_brightness, brightness)
 
     def __update_brightness(self, brightness: int):
-        print("__update_brightness " + str(brightness))
         self.bright.notify_of_external_update(brightness)
 
 
