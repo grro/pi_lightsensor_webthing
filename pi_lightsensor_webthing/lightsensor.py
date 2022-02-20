@@ -31,4 +31,3 @@ class LightSensor:
             except Exception as e:
                 print("error occurred", e)
             sleep(1)
-
