@@ -21,12 +21,13 @@ class LightSensor:
         while True:
             try:
                 self.measures.append(self.sensor.lux)
-                while len(self.measures) > 10:
+                while len(self.measures) > 7:
                     self.measures.pop(0)
                 loop +=1
-                if loop > 5:
+                if loop > 3:
                     loop = 0
-                    median = self.measures[int(len(self.measures) * 0.5)]
+                    sorted_measures = sorted(self.measures)
+                    median = sorted_measures[int(len(sorted_measures) * 0.5)]
                     listener(int(median))
             except Exception as e:
                 print("error occurred", e)
