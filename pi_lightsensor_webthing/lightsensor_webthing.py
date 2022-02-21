@@ -20,6 +20,7 @@ class LightSensorThing(Thing):
 
         self.ioloop = tornado.ioloop.IOLoop.current()
 
+        self.light_sensor = light_sensor
         light_sensor.listen(self.on_measured)
 
         self.bright = Value(0)
@@ -75,12 +76,27 @@ class LightSensorThing(Thing):
                          'readOnly': False,
                      }))
 
+        self.measures = Value("")
+        self.add_property(
+            Property(self,
+                     'measures',
+                     self.measures,
+                     metadata={
+                         'title': 'measures',
+                         "type": "string",
+                         'description': '"The measures',
+                         'readOnly': True,
+                     }))
 
     def on_measured(self, brightness: int):
         self.ioloop.add_callback(self.__update_brightness, brightness)
+        self.ioloop.add_callback(self.__update_measures, ",".join([str(measure) for measure in self.light_sensor.measures]))
 
     def __update_brightness(self, brightness: int):
         self.bright.notify_of_external_update(brightness)
+
+    def __update_measures(self, measures):
+        self.measures.notify_of_external_update(measures)
 
 
 def run_server(port: int, description: str, sampling_rate_sec: int, smoothing_window_sec: int, refreshing_rate_sec:int):
