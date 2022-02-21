@@ -51,7 +51,7 @@ class App(ABC):
         parser.add_argument('--port', metavar='port', required=False, type=int, help='the port of the webthing serivce')
         parser.add_argument('--verbose', metavar='verbose', required=False, type=bool, default=False, help='activates verbose output')
         parser.add_argument('--sampling_rate_sec', metavar='sampling_rate_sec', required=False, type=int, default=1, help='the sampling rate in sec')
-        parser.add_argument('--smoothing_window_sec', metavar='smoothing_window_sec', required=False, type=int, default=15, help='the smoothing window')
+        parser.add_argument('--smoothing_window_sec', metavar='smoothing_window_sec', required=False, type=int, default=10, help='the smoothing window')
         parser.add_argument('--refreshing_rate_sec', metavar='refreshing_rate_sec', required=False, type=int, default=3, help='the refreshing rate')
         self.do_add_argument(parser)
         args = parser.parse_args()
