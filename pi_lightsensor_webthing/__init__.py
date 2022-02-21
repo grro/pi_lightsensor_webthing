@@ -13,7 +13,7 @@ After=syslog.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --verbose $verbose --port $port 
+ExecStart=$entrypoint --command listen --verbose $verbose --port $port --sampling_rate_sec $sampling_rate_sec --smoothing_window_sec $smoothing_window_sec --refreshing_rate_sec $refreshing_rate_sec
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -32,11 +32,17 @@ class LightSensorApp(App):
     def do_process_command(self, command:str, port: int, verbose: bool, args) -> bool:
         if command == 'listen':
             print("running " + self.packagename + " on port " + str(port))
-            run_server(port, self.description)
+            run_server(port, self.description, args.sampling_rate_sec, args.smoothing_window_sec, args.refreshing_rate_sec)
             return True
         elif args.command == 'register':
             print("register " + self.packagename + " on port " + str(port) + " and starting it")
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, verbose=verbose)
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename,
+                                            entrypoint=self.entrypoint,
+                                            port=port,
+                                            verbose=verbose,
+                                            sampling_rate_sec=args.sampling_rate_sec,
+                                            smoothing_window_sec=args.smoothing_window_sec,
+                                            refreshing_rate_sec=args.refreshing_rate_sec)
             self.unit.register(port, unit)
             return True
         else:

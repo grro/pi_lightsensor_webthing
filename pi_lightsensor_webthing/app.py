@@ -50,7 +50,9 @@ class App(ABC):
         parser.add_argument('--command', metavar='command', required=False, type=str, help='the command. Supported commands are: listen (run the webthing service), register (register and starts the webthing service as a systemd unit, deregister (deregisters the systemd unit), log (prints the log)')
         parser.add_argument('--port', metavar='port', required=False, type=int, help='the port of the webthing serivce')
         parser.add_argument('--verbose', metavar='verbose', required=False, type=bool, default=False, help='activates verbose output')
-        parser.add_argument('--measure_period', metavar='measure_period', required=False, type=int, default=7, help='the measure period im sec')
+        parser.add_argument('--sampling_rate_sec', metavar='sampling_rate_sec', required=False, type=int, default=1, help='the sampling rate in sec')
+        parser.add_argument('--smoothing_window_sec', metavar='smoothing_window_sec', required=False, type=int, default=15, help='the smoothing window')
+        parser.add_argument('--refreshing_rate_sec', metavar='refreshing_rate_sec', required=False, type=int, default=3, help='the refreshing rate')
         self.do_add_argument(parser)
         args = parser.parse_args()
 
