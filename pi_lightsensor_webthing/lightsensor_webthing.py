@@ -29,7 +29,6 @@ class LightSensorThing(Thing):
                      'brightness',
                      self.bright,
                      metadata={
-                         '@type': 'BrightnessProperty',
                          'title': 'Brightness',
                          "type": "integer",
                          'unit': 'lux',
