@@ -5,8 +5,7 @@ from threading import Thread
 from time import sleep
 
 
-class LightSensor:
-
+class LightSensossh
     def __init__(self, sampling_rate_sec: int = 1, smoothing_window_sec: int = 15, refreshing_rate_sec:int=1):
         self.smoothing_window_sec = smoothing_window_sec
         self.sampling_rate_sec = sampling_rate_sec
