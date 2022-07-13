@@ -4,7 +4,7 @@ A web connected digital light sensor measuring the intensity of ambient light on
 This project provides a [webthing API](https://iot.mozilla.org/wot/) to a digital light sensor such as [BH1750](https://learn.adafruit.com/adafruit-bh1750-ambient-light-sensor). 
 Please consider to [activate I2C](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c) on raspberry pi.
 
-The pi_lightsensor_webthing package exposes an http webthing endpoint which supports measuring the intensity of ambient light via http. E.g. 
+The pi_lightsensor_webthing package exposes a http webthing endpoint which supports measuring the intensity of ambient light via http. E.g. 
 ```
 # webthing has been started on host 192.168.0.23
 
@@ -33,7 +33,7 @@ After this installation you may start the webthing http endpoint inside your pyt
 ```
 sudo lightsensor --command listen --port 9122 
 ```
-Here, the webthing API will be bind to the local port 9122
+Here, the webthing API will be bound to the local port 9122
 
 Alternatively to the *listen* command, you can use the *register* command to register and start the webthing service as systemd unit. 
 By doing this the webthing service will be started automatically on boot. Starting the server manually using the *listen* command is no longer necessary. 
