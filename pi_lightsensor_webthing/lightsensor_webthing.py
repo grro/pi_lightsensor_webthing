@@ -102,7 +102,7 @@ def run_server(port: int, description: str, sampling_rate_sec: int, smoothing_wi
     light_sensor = LightSensorThing(description, LightSensor(sampling_rate_sec, smoothing_window_sec, refreshing_rate_sec))
     server = WebThingServer(SingleThing(light_sensor), port=port, disable_host_validation=True)
     try:
-        logging.info('starting the server')
+        logging.info('starting the server')light_sensor
         server.start()
     except KeyboardInterrupt:
         logging.info('stopping the server')

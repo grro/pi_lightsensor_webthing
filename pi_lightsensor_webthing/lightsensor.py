@@ -7,7 +7,7 @@ from time import sleep
 
 class LightSensor:
 
-    def __init__(self, sampling_rate_sec: int = 1, smoothing_window_sec: int = 15, refreshing_rate_sec:int=1):
+    def __init__(self, sampling_rate_sec: int = 5, smoothing_window_sec: int = 15, refreshing_rate_sec:int=1):
         self.smoothing_window_sec = smoothing_window_sec
         self.sampling_rate_sec = sampling_rate_sec
         self.refreshing_rate_sec = refreshing_rate_sec
@@ -45,3 +45,8 @@ class LightSensor:
                 print("error occurred", e)
             sleep(self.sampling_rate_sec)
 
+
+
+ls = LightSensor()
+ls.listen()
+sleep(10000)
