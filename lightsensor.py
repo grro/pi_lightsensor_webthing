@@ -44,9 +44,3 @@ class LightSensor:
             except Exception as e:
                 print("error occurred", e)
             sleep(self.sampling_rate_sec)
-
-
-
-ls = LightSensor()
-ls.listen()
-sleep(10000)

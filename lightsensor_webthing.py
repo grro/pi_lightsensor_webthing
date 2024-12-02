@@ -1,7 +1,8 @@
-from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
-from pi_lightsensor_webthing.lightsensor import LightSensor
+import sys
 import logging
 import tornado.ioloop
+from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
+from lightsensor import LightSensor
 
 
 class LightSensorThing(Thing):
@@ -9,13 +10,13 @@ class LightSensorThing(Thing):
     # regarding capabilities refer https://iot.mozilla.org/schemas
     # there is also another schema registry http://iotschema.org/docs/full.html not used by webthing
 
-    def __init__(self, description: str, light_sensor: LightSensor):
+    def __init__(self, light_sensor: LightSensor):
         Thing.__init__(
             self,
             'urn:dev:ops:illuminanceSensor-1',
             'Illuminance Sensor',
             ['MultiLevelSensor'],
-            description
+            "light sensor"
         )
 
         self.ioloop = tornado.ioloop.IOLoop.current()
@@ -98,13 +99,24 @@ class LightSensorThing(Thing):
         self.measures.notify_of_external_update(measures)
 
 
-def run_server(port: int, description: str, sampling_rate_sec: int, smoothing_window_sec: int, refreshing_rate_sec:int):
-    light_sensor = LightSensorThing(description, LightSensor(sampling_rate_sec, smoothing_window_sec, refreshing_rate_sec))
+def run_server(port: int, sampling_rate_sec: int = 1, smoothing_window_sec: int = 10, refreshing_rate_sec:int = 3):
+    light_sensor = LightSensorThing(LightSensor(sampling_rate_sec, smoothing_window_sec, refreshing_rate_sec))
     server = WebThingServer(SingleThing(light_sensor), port=port, disable_host_validation=True)
     try:
-        logging.info('starting the server')light_sensor
+        logging.info('starting the server')
         server.start()
     except KeyboardInterrupt:
         logging.info('stopping the server')
         server.stop()
         logging.info('done')
+
+
+if __name__ == '__main__':
+    try:
+        logging.basicConfig(format='%(asctime)s %(name)-20s: %(levelname)-8s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
+        logging.getLogger('tornado.access').setLevel(logging.ERROR)
+        logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+        run_server(int(sys.argv[1]))
+    except Exception as e:
+        logging.error(str(e))
+        raise e

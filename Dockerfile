@@ -1,22 +1,20 @@
-FROM python:3.9.1-alpine
+FROM python:3-alpine
 
-ENV port 9122
+ENV port 8642
+
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev
+
+RUN cd /etc
+RUN mkdir app
+WORKDIR /etc/app
+ADD *.py /etc/app/
+ADD requirements.txt /etc/app/.
+RUN pip install -r requirements.txt
+
+RUN apk del .build-deps
+
+
+CMD python /etc/app/lightsensor_webthing.py $port
 
 
 
-LABEL org.label-schema.schema-version="1.0" \
-      org.label-schema.name="pi_lightsensor_webthing" \
-      org.label-schema.description=" " \
-      org.label-schema.url="https://github.com/grro/pi_lightsensor_webthing" \
-      org.label-schema.docker.cmd="docker run --privileged -p 9122:9122 grro/pi_lightsensor_webthing"
-
-
-
-RUN apk add build-base
-ADD . /tmp/
-WORKDIR /tmp/
-RUN  python /tmp/setup.py install
-WORKDIR /
-RUN rm -r /tmp/
-
-CMD lightsensor --command listen --port $port
