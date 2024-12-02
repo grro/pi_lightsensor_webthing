@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-ENV port 8642
+ENV port 8080
 
 RUN apk add --no-cache --virtual .build-deps gcc musl-dev
 

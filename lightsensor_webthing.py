@@ -99,7 +99,7 @@ class LightSensorThing(Thing):
         self.measures.notify_of_external_update(measures)
 
 
-def run_server(port: int, sampling_rate_sec: int = 1, smoothing_window_sec: int = 10, refreshing_rate_sec:int = 3):
+def run_server(port: int, sampling_rate_sec: int = 5, smoothing_window_sec: int = 10, refreshing_rate_sec:int = 3):
     light_sensor = LightSensorThing(LightSensor(sampling_rate_sec, smoothing_window_sec, refreshing_rate_sec))
     server = WebThingServer(SingleThing(light_sensor), port=port, disable_host_validation=True)
     try:
