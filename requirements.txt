@@ -1,2 +1,3 @@
 webthing>=0.15.0
 adafruit-circuitpython-bh1750==1.1.5
+RPi.GPIO==0.7.1
